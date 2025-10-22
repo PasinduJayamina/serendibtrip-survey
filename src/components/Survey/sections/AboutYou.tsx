@@ -142,7 +142,40 @@ export default function AboutYou({
             ? 'How often do you travel within Sri Lanka?'
             : 'ඔබ ශ්‍රී ලංකාව තුළ කොපමණ නිතර සංචාරය කරනවාද?'}
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+        {/* Mobile fallback: simple vertical buttons for reliability */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {travelFrequencies.map((freq) => {
+            const isSelected = data.travel_frequency === freq.value;
+            return (
+              <button
+                key={freq.value}
+                type="button"
+                onClick={() => onChange('travel_frequency', freq.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm
+                  ${
+                    isSelected
+                      ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                      : 'bg-white border-gray-200 active:bg-gray-50'
+                  }
+                `}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {lang === 'en' ? freq.en : freq.si}
+                  </span>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-500 text-white text-xs font-bold">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Desktop and up: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-2 gap-3 w-full">
           {travelFrequencies.map((freq) => (
             <Card3D
               key={freq.value}
@@ -194,7 +227,39 @@ export default function AboutYou({
             ({lang === 'en' ? 'Select all' : 'සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
+        {/* Mobile fallback: togglable vertical list */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {companions.map((comp) => {
+            const isSelected = data.travel_companions?.includes(comp.value);
+            return (
+              <button
+                key={comp.value}
+                type="button"
+                onClick={() => handleCompanionToggle(comp.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm
+                  ${
+                    isSelected
+                      ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                      : 'bg-white border-gray-200 active:bg-gray-50'
+                  }
+                `}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {lang === 'en' ? comp.en : comp.si}
+                  </span>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-500 text-white text-xs font-bold">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop and up: original premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-3 gap-3 w-full">
           {companions.map((comp) => (
             <Card3D
               key={comp.value}
