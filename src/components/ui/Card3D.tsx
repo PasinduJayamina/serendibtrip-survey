@@ -26,66 +26,41 @@ function Card3D({
     : null;
 
   return (
-    <div
+    <button
       onClick={onClick}
-      role="button"
-      tabIndex={0}
+      type="button"
       aria-pressed={selected}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
       className={`
-        relative cursor-pointer rounded-xl p-4 min-h-[90px]
-        backdrop-blur-md
+        w-full text-left cursor-pointer rounded-xl p-4 
         transition-all duration-200
-        group
         focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-1
         ${
           selected
-            ? 'bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 shadow-lg ring-2 ring-teal-500 border-2 border-teal-500'
-            : 'bg-white shadow-md border-2 border-gray-300 hover:border-teal-300 hover:shadow-lg'
+            ? 'bg-teal-50 shadow-md ring-2 ring-teal-500 border-2 border-teal-500'
+            : 'bg-white shadow-sm border-2 border-gray-300 hover:border-teal-300 active:border-teal-400'
         }
         ${className}
       `}
-      style={{
-        minHeight: '90px',
-        display: 'block',
-      }}
     >
-      {/* Gradient glow effect */}
-      <div
-        className={`absolute inset-0 rounded-xl bg-gradient-to-br ${
-          selected
-            ? 'from-teal-400/20 via-emerald-400/10 to-cyan-400/20'
-            : 'from-white/50 via-white/30 to-transparent'
-        } opacity-60 pointer-events-none`}
-      />
-
       {/* Content */}
-      <div className="relative z-10">
+      <div className="flex flex-col gap-2">
         {icon && (
           <div
-            className={`mb-2 ${
+            className={`${
               selected ? 'text-teal-600' : 'text-gray-600'
             } transition-colors duration-200`}
           >
             {IconComponent ? (
-              <IconComponent className="w-7 h-7" aria-hidden="true" />
+              <IconComponent className="w-6 h-6" aria-hidden="true" />
             ) : (
-              <span
-                className="text-2xl filter drop-shadow-lg"
-                aria-hidden="true"
-              >
+              <span className="text-xl" aria-hidden="true">
                 {icon}
               </span>
             )}
           </div>
         )}
         <div
-          className={`text-sm font-semibold leading-snug transition-colors duration-200 ${
+          className={`text-sm font-medium leading-snug ${
             selected ? 'text-teal-900' : 'text-gray-800'
           }`}
         >
@@ -93,18 +68,18 @@ function Card3D({
         </div>
       </div>
 
-      {/* Selected indicator - simple checkmark */}
+      {/* Selected indicator */}
       {selected && (
         <div
-          className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md"
+          className="absolute top-2 right-2 w-5 h-5 bg-teal-500 rounded-full flex items-center justify-center"
           aria-label="Selected"
         >
-          <span className="text-white text-sm font-bold" aria-hidden="true">
+          <span className="text-white text-xs font-bold" aria-hidden="true">
             ✓
           </span>
         </div>
       )}
-    </div>
+    </button>
   );
 }
 
