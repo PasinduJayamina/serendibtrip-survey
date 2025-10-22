@@ -138,7 +138,7 @@ export default function TravelInterests({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-2xl mx-auto space-y-6"
+      className="max-w-2xl mx-auto space-y-6 px-4 sm:px-6"
     >
       {/* Header */}
       <div className="text-center space-y-3">

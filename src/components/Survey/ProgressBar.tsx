@@ -16,8 +16,8 @@ export default function ProgressBar({ progress }: ProgressBarProps) {
 
   return (
     <div className="w-full bg-gradient-to-r from-gray-50 via-white to-gray-50 border-t border-gray-200/50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden shadow-inner">
             <motion.div
               className="h-full bg-gradient-to-r from-teal-400 via-emerald-500 to-cyan-500 relative overflow-hidden rounded-full"
@@ -40,13 +40,13 @@ export default function ProgressBar({ progress }: ProgressBarProps) {
             </motion.div>
           </div>
           <motion.div
-            className="flex items-center gap-1.5 bg-gradient-to-br from-teal-50 to-emerald-50 px-3 py-1.5 rounded-full shadow-sm border border-teal-200/50"
+            className="flex items-center gap-1 sm:gap-1.5 bg-gradient-to-br from-teal-50 to-emerald-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-sm border border-teal-200/50"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
           >
             <motion.span
-              className="text-base"
+              className="text-sm sm:text-base"
               animate={{ rotate: [0, 8, -8, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >

@@ -222,7 +222,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
-              className="fixed top-6 right-6 z-40"
+              className="fixed top-4 right-4 sm:top-6 sm:right-6 z-40"
             >
               <LanguageToggle
                 currentLang={language}
@@ -240,7 +240,7 @@ export default function Home() {
             </motion.div>
 
             {/* Survey sections with beautiful glassmorphic cards */}
-            <div className="min-h-screen flex items-center justify-center p-4 py-24 pb-32">
+            <div className="min-h-screen flex items-center justify-center px-4 py-24 pb-32 sm:px-6">
               <motion.div
                 key={currentSection}
                 initial={{ opacity: 0, y: 30 }}
@@ -255,7 +255,7 @@ export default function Home() {
                 {/* Glassmorphic card container with section-specific theme */}
                 <div
                   className="relative backdrop-blur-xl bg-gradient-to-br from-white/95 via-white/90 to-white/85 
-                             rounded-2xl shadow-xl p-6 md:p-8 border border-white/60"
+                             rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 border border-white/60"
                 >
                   {/* Section-specific ambient glow effect */}
                   <div

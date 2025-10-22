@@ -76,7 +76,7 @@ export default function ThankYou({ lang }: ThankYouProps) {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl w-full text-center space-y-8"
+        className="max-w-2xl w-full text-center space-y-8 px-4 sm:px-6"
       >
         {/* Animated Badge */}
         <motion.div
