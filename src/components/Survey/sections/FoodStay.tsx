@@ -137,7 +137,37 @@ export default function FoodStay({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
+        {/* Mobile fallback: vertical list */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {accommodations.map((acc) => {
+            const isSelected = data.accommodation?.includes(acc.value);
+            return (
+              <button
+                key={acc.value}
+                type="button"
+                onClick={() => handleAccommodationToggle(acc.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {lang === 'en' ? acc.en : acc.si}
+                  </span>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-500 text-white text-xs font-bold">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-3 gap-3 w-full">
           {accommodations.map((acc) => (
             <Card3D
               key={acc.value}
@@ -162,7 +192,37 @@ export default function FoodStay({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
+        {/* Mobile fallback: vertical list */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {foodStyles.map((food) => {
+            const isSelected = data.food_style?.includes(food.value);
+            return (
+              <button
+                key={food.value}
+                type="button"
+                onClick={() => handleFoodToggle(food.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {lang === 'en' ? food.en : food.si}
+                  </span>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-500 text-white text-xs font-bold">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-3 gap-3 w-full">
           {foodStyles.map((food) => (
             <Card3D
               key={food.value}

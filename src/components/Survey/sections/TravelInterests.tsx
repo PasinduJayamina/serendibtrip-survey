@@ -184,7 +184,37 @@ export default function TravelInterests({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full">
+        {/* Mobile fallback: vertical multi-select list */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {interests.map((interest) => {
+            const isSelected = data.interests?.includes(interest.value);
+            return (
+              <button
+                key={interest.value}
+                type="button"
+                onClick={() => handleInterestToggle(interest.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {lang === 'en' ? interest.en : interest.si}
+                  </span>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-teal-500 text-white text-xs font-bold">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-3 md:grid-cols-4 gap-3 w-full">
           {interests.map((interest) => (
             <Card3D
               key={interest.value}
@@ -207,7 +237,30 @@ export default function TravelInterests({
             ? 'When do you usually prefer to travel?'
             : 'ඔබ සාමාන්‍යයෙන් සංචාරය කිරීමට කැමති කවදාද?'}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Mobile fallback: vertical single-select */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {preferredTimes.map((time) => {
+            const isSelected = data.preferred_time === time.value;
+            return (
+              <button
+                key={time.value}
+                type="button"
+                onClick={() => onChange('preferred_time', time.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <span className="text-sm font-medium text-gray-900">
+                  {lang === 'en' ? time.en : time.si}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-4">
           {preferredTimes.map((time) => (
             <Card3D
               key={time.value}
@@ -263,7 +316,30 @@ export default function TravelInterests({
             )
           </span>
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Mobile fallback: vertical single-select */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {budgets.map((budget) => {
+            const isSelected = data.budget === budget.value;
+            return (
+              <button
+                key={budget.value}
+                type="button"
+                onClick={() => onChange('budget', budget.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <span className="text-sm font-medium text-gray-900">
+                  {lang === 'en' ? budget.en : budget.si}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-4">
           {budgets.map((budget) => (
             <Card3D
               key={budget.value}
@@ -285,7 +361,30 @@ export default function TravelInterests({
             ? 'How do you usually travel?'
             : 'ඔබ සාමාන්‍යයෙන් ගමන් කරන්නේ කෙසේද?'}
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Mobile fallback: vertical single-select */}
+        <div className="sm:hidden flex flex-col gap-2 w-full">
+          {transportModes.map((mode) => {
+            const isSelected = data.transport_mode === mode.value;
+            return (
+              <button
+                key={mode.value}
+                type="button"
+                onClick={() => onChange('transport_mode', mode.value)}
+                className={`w-full text-left rounded-xl px-4 py-4 border transition-all shadow-sm ${
+                  isSelected
+                    ? 'bg-teal-50 border-teal-400 ring-2 ring-teal-400'
+                    : 'bg-white border-gray-200 active:bg-gray-50'
+                }`}
+              >
+                <span className="text-sm font-medium text-gray-900">
+                  {lang === 'en' ? mode.en : mode.si}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Desktop+: premium Card3D grid */}
+        <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-4">
           {transportModes.map((mode) => (
             <Card3D
               key={mode.value}
