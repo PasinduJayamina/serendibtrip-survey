@@ -39,21 +39,31 @@ function Card3D({
       }}
       className={`
         relative cursor-pointer rounded-xl p-4
-        backdrop-blur-md
         transition-all duration-200
         group
         focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-1
+        sm:backdrop-blur-md
         ${
           selected
-            ? 'bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 shadow-md ring-2 ring-teal-400'
-            : 'bg-gradient-to-br from-white via-white to-gray-50/50 shadow-sm'
+            ? [
+                // Mobile: solid subtle selection background and border
+                'bg-teal-50 ring-2 ring-teal-400',
+                // Desktop+: premium gradient selection
+                'sm:bg-gradient-to-br sm:from-teal-50 sm:via-emerald-50 sm:to-cyan-50 sm:shadow-md',
+              ].join(' ')
+            : [
+                // Mobile: clean solid card with soft border/shadow
+                'bg-white border border-gray-200 shadow-sm',
+                // Desktop+: subtle glass gradient
+                'sm:border-0 sm:bg-gradient-to-br sm:from-white sm:via-white sm:to-gray-50/50 sm:shadow-sm',
+              ].join(' ')
         }
         ${className}
       `}
     >
-      {/* Gradient glow effect */}
+      {/* Gradient glow effect (desktop only) */}
       <div
-        className={`absolute inset-0 rounded-xl bg-gradient-to-br ${
+        className={`hidden sm:block absolute inset-0 rounded-xl bg-gradient-to-br ${
           selected
             ? 'from-teal-400/20 via-emerald-400/10 to-cyan-400/20'
             : 'from-white/50 via-white/30 to-transparent'
@@ -61,7 +71,7 @@ function Card3D({
       />
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 min-h-[72px] sm:min-h-[90px]">
         {icon && (
           <div
             className={`mb-2 ${
@@ -69,10 +79,13 @@ function Card3D({
             } transition-colors duration-200`}
           >
             {IconComponent ? (
-              <IconComponent className="w-7 h-7" aria-hidden="true" />
+              <IconComponent
+                className="w-6 h-6 sm:w-7 sm:h-7"
+                aria-hidden="true"
+              />
             ) : (
               <span
-                className="text-2xl filter drop-shadow-lg"
+                className="text-xl sm:text-2xl filter drop-shadow-lg"
                 aria-hidden="true"
               >
                 {icon}
@@ -92,10 +105,13 @@ function Card3D({
       {/* Selected indicator - simple checkmark */}
       {selected && (
         <div
-          className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md"
+          className="absolute -top-1.5 -right-1.5 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full flex items-center justify-center shadow-md"
           aria-label="Selected"
         >
-          <span className="text-white text-sm font-bold" aria-hidden="true">
+          <span
+            className="text-white text-xs sm:text-sm font-bold"
+            aria-hidden="true"
+          >
             ✓
           </span>
         </div>
