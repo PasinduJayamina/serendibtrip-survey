@@ -32,7 +32,7 @@ export default function FinalStep({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-3xl mx-auto space-y-6 px-4 sm:px-6"
+      className="max-w-3xl mx-auto space-y-6 px-4 sm:px-6 pb-8"
     >
       {/* Header */}
       <div className="text-center space-y-3">
@@ -55,48 +55,52 @@ export default function FinalStep({
       </div>
 
       {/* Marketing Opt-in */}
-      <Checkbox
-        variant="card"
-        checked={data.wants_marketing || false}
-        onChange={(e) => onChange('wants_marketing', e.target.checked)}
-        label={
-          <div className="flex items-center gap-2">
-            <Mail className="w-5 h-5 text-teal-500 flex-shrink-0" />
-            <span className="font-semibold text-gray-800 text-base">
-              {lang === 'en'
-                ? 'Get travel insights & early beta access 📬'
-                : 'සංචාරක තොරතුරු සහ මුල් බීටා ප්‍රවේශය ලබා ගන්න 📬'}
-            </span>
-          </div>
-        }
-        description={
-          lang === 'en'
-            ? 'Exclusive Sri Lankan travel tips, hidden gems, and first access to new features.'
-            : 'විශේෂ ශ්‍රී ලාංකික සංචාරක උපදෙස්, සැඟවුණු මැණික්, සහ නව විශේෂාංග සඳහා පළමු ප්‍රවේශය.'
-        }
-      />
+      <div className="w-full">
+        <Checkbox
+          variant="card"
+          checked={data.wants_marketing || false}
+          onChange={(e) => onChange('wants_marketing', e.target.checked)}
+          label={
+            <div className="flex items-center gap-2">
+              <Mail className="w-5 h-5 text-teal-500 flex-shrink-0" />
+              <span className="font-semibold text-gray-800 text-base">
+                {lang === 'en'
+                  ? 'Get travel insights & early beta access 📬'
+                  : 'සංචාරක තොරතුරු සහ මුල් බීටා ප්‍රවේශය ලබා ගන්න 📬'}
+              </span>
+            </div>
+          }
+          description={
+            lang === 'en'
+              ? 'Exclusive Sri Lankan travel tips, hidden gems, and first access to new features.'
+              : 'විශේෂ ශ්‍රී ලාංකික සංචාරක උපදෙස්, සැඟවුණු මැණික්, සහ නව විශේෂාංග සඳහා පළමු ප්‍රවේශය.'
+          }
+        />
+      </div>
 
       {/* Privacy Consent (Required) */}
-      <Checkbox
-        variant="card"
-        checked={data.data_consent || false}
-        onChange={(e) => onChange('data_consent', e.target.checked)}
-        label={
-          <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-teal-600 flex-shrink-0" />
-            <span className="font-semibold text-gray-800 text-base">
-              {lang === 'en' ? 'Privacy Consent' : 'පෞද්ගලිකත්ව එකඟතාව'}
-              <span className="text-red-500 ml-1">*</span>
-            </span>
-          </div>
-        }
-        description={
-          lang === 'en'
-            ? "I agree that my anonymous answers may be used to improve SerendibTrip's personalization."
-            : 'SerendibTrip හි පුද්ගලාරෝපණය වැඩිදියුණු කිරීම සඳහා මගේ නිර්නාමික පිළිතුරු භාවිතා කළ හැකි බවට මම එකඟ වෙමි.'
-        }
-        className={data.data_consent ? 'border-teal-400' : 'border-gray-200'}
-      />
+      <div className="w-full">
+        <Checkbox
+          variant="card"
+          checked={data.data_consent || false}
+          onChange={(e) => onChange('data_consent', e.target.checked)}
+          label={
+            <div className="flex items-center gap-2">
+              <Shield className="w-5 h-5 text-teal-600 flex-shrink-0" />
+              <span className="font-semibold text-gray-800 text-base">
+                {lang === 'en' ? 'Privacy Consent' : 'පෞද්ගලිකත්ව එකඟතාව'}
+                <span className="text-red-500 ml-1">*</span>
+              </span>
+            </div>
+          }
+          description={
+            lang === 'en'
+              ? "I agree that my anonymous answers may be used to improve SerendibTrip's personalization."
+              : 'SerendibTrip හි පුද්ගලාරෝපණය වැඩිදියුණු කිරීම සඳහා මගේ නිර්නාමික පිළිතුරු භාවිතා කළ හැකි බවට මම එකඟ වෙමි.'
+          }
+          className={data.data_consent ? 'border-teal-400' : 'border-gray-200'}
+        />
+      </div>
 
       {/* Submit Note */}
       {!data.data_consent && (
