@@ -1,103 +1,275 @@
-import Image from "next/image";
+'use client';
+
+import { useState, lazy, Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import WelcomeScreen from '@/components/Survey/WelcomeScreen';
+import ProgressBar from '@/components/Survey/ProgressBar';
+import LanguageToggle from '@/components/Survey/LanguageToggle';
+import SurveyLoader from '@/components/Survey/SurveyLoader';
+import { useFormProgress } from '@/hooks/useFormProgress';
+import { useTimer } from '@/hooks/useTimer';
+import { SurveyResponse } from '@/types/survey';
+import PremiumBackground from '@/components/effects/PremiumBackground';
+
+// Lazy load survey sections for better performance
+const AboutYou = lazy(() => import('@/components/Survey/sections/AboutYou'));
+const TravelInterests = lazy(
+  () => import('@/components/Survey/sections/TravelInterests')
+);
+const FoodStay = lazy(() => import('@/components/Survey/sections/FoodStay'));
+const QuickReaction = lazy(
+  () => import('@/components/Survey/sections/QuickReaction')
+);
+const FinalStep = lazy(() => import('@/components/Survey/sections/FinalStep'));
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [language, setLanguage] = useState<'en' | 'si'>('en');
+  const [formData, setFormData] = useState<Partial<SurveyResponse>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { currentSection, goToNext, goToPrevious, progress } =
+    useFormProgress();
+  const { seconds } = useTimer();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'si' : 'en');
+  };
+
+  const handleStart = () => {
+    goToNext();
+  };
+
+  const handleFieldChange = (field: string, value: unknown) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const submissionData = {
+        ...formData,
+        completion_time_seconds: seconds,
+        language,
+        // Ensure boolean fields have default values
+        wants_marketing: formData.wants_marketing || false,
+        data_consent: formData.data_consent || false,
+      };
+
+      // Log what we're sending for debugging
+      console.log('📤 Submitting survey data:', submissionData);
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.href = '/thank-you';
+      } else {
+        console.error('Failed to submit survey:', result);
+
+        // Show detailed validation errors if available
+        let errorMessage =
+          result.message ||
+          result.error ||
+          'Failed to submit survey. Please try again.';
+
+        if (
+          result.details &&
+          Array.isArray(result.details) &&
+          result.details.length > 0
+        ) {
+          const missingFields = result.details
+            .map((err: { path?: string[] }) => err.path?.join('.') || 'unknown')
+            .join(', ');
+          errorMessage = `Validation failed: ${missingFields}`;
+          console.error('Missing or invalid fields:', result.details);
+        }
+
+        setSubmitError(errorMessage);
+        // Show error for 10 seconds for validation errors
+        setTimeout(() => setSubmitError(null), 10000);
+      }
+    } catch (error) {
+      console.error('Error submitting survey:', error);
+      setSubmitError(
+        'Network error. Please check your connection and try again.'
+      );
+      setTimeout(() => setSubmitError(null), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const renderSection = () => {
+    const content = (() => {
+      switch (currentSection) {
+        case 'about':
+          return (
+            <AboutYou
+              data={formData}
+              onChange={handleFieldChange}
+              onNext={goToNext}
+              lang={language}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          );
+        case 'interests':
+          return (
+            <TravelInterests
+              data={formData}
+              onChange={handleFieldChange}
+              onNext={goToNext}
+              onBack={goToPrevious}
+              lang={language}
+            />
+          );
+        case 'foodstay':
+          return (
+            <FoodStay
+              data={formData}
+              onChange={handleFieldChange}
+              onNext={goToNext}
+              onBack={goToPrevious}
+              lang={language}
+            />
+          );
+        case 'reactions':
+          return (
+            <QuickReaction
+              data={formData}
+              onChange={handleFieldChange}
+              onNext={goToNext}
+              onBack={goToPrevious}
+              lang={language}
+            />
+          );
+        case 'final':
+          return (
+            <FinalStep
+              data={formData}
+              onChange={handleFieldChange}
+              onSubmit={handleSubmit}
+              onBack={goToPrevious}
+              isSubmitting={isSubmitting}
+              submitError={submitError}
+              lang={language}
+            />
+          );
+        default:
+          return null;
+      }
+    })();
+
+    return <Suspense fallback={<SurveyLoader />}>{content}</Suspense>;
+  };
+
+  // Section-specific visual themes for variety
+  const getSectionTheme = () => {
+    switch (currentSection) {
+      case 'about':
+        return {
+          gradient: 'from-purple-400/5 via-transparent to-pink-400/5',
+          glow: 'rgba(168, 85, 247, 0.12)',
+        };
+      case 'interests':
+        return {
+          gradient: 'from-orange-400/5 via-transparent to-amber-400/5',
+          glow: 'rgba(251, 146, 60, 0.12)',
+        };
+      case 'foodstay':
+        return {
+          gradient: 'from-red-400/5 via-transparent to-rose-400/5',
+          glow: 'rgba(239, 68, 68, 0.12)',
+        };
+      case 'reactions':
+        return {
+          gradient: 'from-teal-400/5 via-transparent to-cyan-400/5',
+          glow: 'rgba(20, 184, 166, 0.12)',
+        };
+      case 'final':
+        return {
+          gradient: 'from-green-400/5 via-transparent to-emerald-400/5',
+          glow: 'rgba(16, 185, 129, 0.12)',
+        };
+      default:
+        return {
+          gradient: 'from-teal-400/5 via-transparent to-emerald-400/5',
+          glow: 'rgba(20, 184, 166, 0.12)',
+        };
+    }
+  };
+
+  const theme = getSectionTheme();
+
+  return (
+    <main className="relative min-h-screen overflow-x-hidden">
+      {/* Premium animated background */}
+      <PremiumBackground />
+
+      <AnimatePresence mode="wait">
+        {currentSection === 'welcome' ? (
+          <div className="min-h-screen flex items-center justify-center">
+            <WelcomeScreen onStart={handleStart} lang={language} />
+          </div>
+        ) : (
+          <>
+            {/* Language toggle - top right */}
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="fixed top-6 right-6 z-40"
+            >
+              <LanguageToggle
+                currentLang={language}
+                onToggle={toggleLanguage}
+              />
+            </motion.div>
+
+            {/* Beautiful bottom progress bar with percentage */}
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="fixed bottom-0 left-0 right-0 z-40"
+            >
+              <ProgressBar progress={progress} />
+            </motion.div>
+
+            {/* Survey sections with beautiful glassmorphic cards */}
+            <div className="min-h-screen flex items-center justify-center p-4 py-24 pb-32">
+              <motion.div
+                key={currentSection}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="w-full max-w-5xl mx-auto"
+              >
+                {/* Glassmorphic card container with section-specific theme */}
+                <div
+                  className="relative backdrop-blur-xl bg-gradient-to-br from-white/95 via-white/90 to-white/85 
+                             rounded-2xl shadow-xl p-6 md:p-8 border border-white/60"
+                >
+                  {/* Section-specific ambient glow effect */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} rounded-2xl pointer-events-none`}
+                  />
+
+                  {/* Content */}
+                  <div className="relative z-10">{renderSection()}</div>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
+    </main>
   );
 }

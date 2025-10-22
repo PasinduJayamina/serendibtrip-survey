@@ -1,0 +1,23 @@
+{
+  "welcome": {
+    "title": "SerendibTrip",
+    "subtitle": "Discover Your Sri Lankan Travel Personality",
+    "greeting": "Hey there, wanderer!",
+    "description": "Ready to discover what kind of Sri Lankan traveler you are? Let's explore the island — question by question.",
+    "time": "⏱ Takes only 2 minutes",
+    "button": "START YOUR JOURNEY",
+    "privacy": "🔒 Your answers are 100% anonymous"
+  },
+  "sections": {
+    "about": "About You",
+    "interests": "Your Travel Vibe",
+    "foodstay": "Food & Stay",
+    "reactions": "Quick Reactions",
+    "final": "One Last Thing"
+  },
+  "navigation": {
+    "back": "Back",
+    "continue": "Continue",
+    "submit": "Submit & Reveal My Type"
+  }
+}
