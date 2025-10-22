@@ -237,7 +237,6 @@ export default function TravelInterests({
             ? 'When do you usually prefer to travel?'
             : 'ඔබ සාමාන්‍යයෙන් සංචාරය කිරීමට කැමති කවදාද?'}
         </h3>
-        <div className="text-center text-3xl mb-2">📅</div>
         {/* Mobile fallback: vertical single-select */}
         <div className="sm:hidden flex flex-col gap-2 w-full">
           {preferredTimes.map((time) => {
@@ -261,7 +260,7 @@ export default function TravelInterests({
           })}
         </div>
         {/* Desktop+: premium Card3D grid */}
-        <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="hidden sm:grid sm:grid-cols-1 md:grid-cols-2 gap-4">
           {preferredTimes.map((time) => (
             <Card3D
               key={time.value}
