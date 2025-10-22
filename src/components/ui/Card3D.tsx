@@ -38,15 +38,15 @@ function Card3D({
         }
       }}
       className={`
-        relative cursor-pointer rounded-xl p-4
+        relative cursor-pointer rounded-xl p-4 min-h-[80px]
         backdrop-blur-md
         transition-all duration-200
         group
         focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-1
         ${
           selected
-            ? 'bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 shadow-md ring-2 ring-teal-400'
-            : 'bg-gradient-to-br from-white via-white to-gray-50/50 shadow-sm'
+            ? 'bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 shadow-md ring-2 ring-teal-400 border-2 border-teal-400'
+            : 'bg-gradient-to-br from-white via-white to-gray-50/50 shadow-sm border-2 border-gray-200 hover:border-teal-200'
         }
         ${className}
       `}

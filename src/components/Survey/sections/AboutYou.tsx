@@ -142,7 +142,7 @@ export default function AboutYou({
             ? 'How often do you travel within Sri Lanka?'
             : 'ඔබ ශ්‍රී ලංකාව තුළ කොපමණ නිතර සංචාරය කරනවාද?'}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
           {travelFrequencies.map((freq) => (
             <Card3D
               key={freq.value}
@@ -194,7 +194,7 @@ export default function AboutYou({
             ({lang === 'en' ? 'Select all' : 'සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
           {companions.map((comp) => (
             <Card3D
               key={comp.value}

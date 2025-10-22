@@ -145,7 +145,7 @@ export default function QuickReaction({
             ? 'How spontaneous are you with trips?'
             : 'සංචාර සඳහා ඔබ කෙතරම් ස්වයංසිද්ධද?'}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 w-full">
           {spontaneityLevels.map((level) => (
             <button
               key={level.value}

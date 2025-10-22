@@ -137,7 +137,7 @@ export default function FoodStay({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
           {accommodations.map((acc) => (
             <Card3D
               key={acc.value}
@@ -162,7 +162,7 @@ export default function FoodStay({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full">
           {foodStyles.map((food) => (
             <Card3D
               key={food.value}

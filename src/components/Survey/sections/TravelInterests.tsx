@@ -184,7 +184,7 @@ export default function TravelInterests({
             ({lang === 'en' ? 'Select all that apply' : 'අදාළ සියල්ල තෝරන්න'})
           </span>
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full">
           {interests.map((interest) => (
             <Card3D
               key={interest.value}
